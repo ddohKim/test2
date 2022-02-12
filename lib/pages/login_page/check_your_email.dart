@@ -31,7 +31,7 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Colors.lightBlueAccent,
+        color: Colors.cyanAccent,
         child: SafeArea(
           child: Scaffold(
             key: _scaffoldKey,
@@ -92,7 +92,7 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
       color: Colors.white54,
       textColor: Colors.black87,
       child: Text(
-        "이메일 인증을 해주세요",
+        "인증 이메일을 발송할게요",
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
     );
@@ -108,7 +108,7 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
       color: Colors.white54,
       textColor: Colors.black87,
       child: Text(
-        "이메일 인증 버튼입니다",
+        "이메일 인증 확인 버튼입니다",
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
     );

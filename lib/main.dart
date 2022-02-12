@@ -2,11 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/pages/home_page/upload_page.dart';
-import 'package:test2/pages/login_page/auth_page.dart';
 import 'package:test2/pages/login_page/check_your_email.dart';
 import 'package:test2/pages/my_home.dart';
 import 'package:test2/pages/start_page.dart';
 import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/states/category_notifier.dart';
 
 
 
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_)=>PageNotifier())], //pagenotifier의 기본값 currentpage=MyHomePage.pagename
+      providers: [ChangeNotifierProvider(create: (_)=>PageNotifier(),),ChangeNotifierProvider.value(value: categoryNotifier)], //pagenotifier의 기본값 currentpage=MyHomePage.pagename
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.lightBlue,fontFamily: 'NanumAJumMaJaYu',),
         title: 'Flutter Demo',

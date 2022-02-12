@@ -2,7 +2,9 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/constants/common_size.dart';
+import 'package:test2/pages/home_page/category_input_page.dart';
 import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/states/category_notifier.dart';
 
 class UploadPage extends Page {
   static const pageName = 'UploadPage';//value key 지정해줌
@@ -119,11 +121,17 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
               _divider,
               ListTile(
                 onTap: () {
-                  //context.beamToNamed(
-                  //        '/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT'); //beamer이용 category로 이동
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoryInputPage()),
+                  );
+
+                  //Provider.of<PageNotifier>(context, listen: false)
+                    //  .goToOtherPage(CategoryPage.pageName);
                 },
                 dense: true,
-                title: Text('CATEGORY'),
+                title: Text(context.watch<CategoryNotifier>().currentCategory),
                 trailing: Icon(Icons.navigate_next),
               ),
               //dense는 listtile이 압축되있는지 말해줌, listtile로 쉽게 디자인 만들수 있음

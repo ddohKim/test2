@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/pages/home_page/som_page.dart';
 import 'package:test2/pages/home_page/upload_page.dart';
-import 'package:test2/pages/login_page/auth_page.dart';
 import 'package:test2/provider/page_notifier.dart';
 import 'package:test2/widgets/expandable_fat.dart';
 
@@ -41,8 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
           IconButton(
               onPressed: () {
-                FirebaseAuth.instance
-                    .signOut(); //실제로 로그아웃
+                FirebaseAuth.instance.signOut(); //실제로 로그아웃
                 //Provider.of<PageNotifier>(context,listen: false).goToOtherPage(AuthPage.pageName);
               },
               icon: Icon(CupertinoIcons.nosign)),
@@ -53,7 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           MaterialButton(
             onPressed: () {
-              Provider.of<PageNotifier>(context,listen: false).goToOtherPage(UploadPage.pageName);
+              Provider.of<PageNotifier>(context, listen: false)
+                  .goToOtherPage(UploadPage.pageName);
             },
             shape: CircleBorder(),
             height: 40,
@@ -121,5 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Text _appbartext(String text) => Text(text,style: TextStyle(fontWeight: FontWeight.bold));
+  Text _appbartext(String text) =>
+      Text(text, style: TextStyle(fontWeight: FontWeight.bold));
 }

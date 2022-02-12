@@ -11,7 +11,7 @@ class IntroPage1 extends StatelessWidget {
         Size size=MediaQuery.maybeOf(context)!.size; //현재 모바일 사이즈를 가져오는 것,  maybeOf는 사이즈를 가져오지 못할때 null을 부여함 일반적인 경우는 of사용하면 됨
         final imgSize=size.width;
         final sizeOfPosImg=(imgSize); //패딩 horizontal이 16이니까 양쪽 32
-        return Container(color: Colors.lightBlue,
+        return Container(color: Colors.cyanAccent,
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
