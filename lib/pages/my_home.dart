@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:test2/pages/home_page/som_page.dart';
 import 'package:test2/pages/home_page/upload_page.dart';
 import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/repository/user_service.dart';
 import 'package:test2/widgets/expandable_fat.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -34,7 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     : _appbartext('내 정보'),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                UserService().firestoreTest();
+              },
               icon: Icon(
                 CupertinoIcons.search,
               )),

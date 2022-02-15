@@ -7,6 +7,7 @@ import 'package:test2/pages/my_home.dart';
 import 'package:test2/pages/start_page.dart';
 import 'package:test2/provider/page_notifier.dart';
 import 'package:test2/states/category_notifier.dart';
+import 'package:test2/states/select_image_notifier.dart';
 
 
 
@@ -24,7 +25,6 @@ class App extends StatelessWidget { //firebase를 받아오는지 확인 이용�
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (context, snapshot) {
-
         if(snapshot.hasError){
           return Container(child: Center(child: Text("Something went wrong, please try again later!"),),);
         }
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_)=>PageNotifier(),),ChangeNotifierProvider.value(value: categoryNotifier)], //pagenotifier의 기본값 currentpage=MyHomePage.pagename
+      providers: [ChangeNotifierProvider(create: (_)=>PageNotifier(),),ChangeNotifierProvider.value(value: categoryNotifier),ChangeNotifierProvider(create: (context)=>SelectImageNotifier(),)], //pagenotifier의 기본값 currentpage=MyHomePage.pagename
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.lightBlue,fontFamily: 'NanumAJumMaJaYu',),
         title: 'Flutter Demo',
