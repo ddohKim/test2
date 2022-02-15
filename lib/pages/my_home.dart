@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                UserService().firestoreTest();
+
               },
               icon: Icon(
                 CupertinoIcons.search,

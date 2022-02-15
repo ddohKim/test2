@@ -40,6 +40,9 @@ class ItemModel {
   ItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) //: 이니셜라이져라고 불림 {}보다 더 빨리 실행됨
       : this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
 
+  ItemModel.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) //: 이니셜라이져라고 불림 {}보다 더 빨리 실행됨
+      : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['userKey'] = userKey;
@@ -52,4 +55,9 @@ class ItemModel {
     return map;
   }
 
+
+  static String generateItemKey(String uid){
+    String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
+    return '{$uid}_$timeInMilli';
+  }
 }
