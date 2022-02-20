@@ -14,8 +14,7 @@ class IntroPage extends StatelessWidget {
         final sizeOfPosImg=(imgSize)*0.1; //패딩 horizontal이 16이니까 양쪽 32
 
         return Container(
-          decoration: BoxDecoration(image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage('assets/솜사탕배경1.png'))),
+          color: Colors.cyanAccent,
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

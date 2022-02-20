@@ -88,8 +88,7 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                       .bodyText2,
                 ),
                 onPressed: () {
-                  Provider.of<PageNotifier>(context, listen: false)
-                      .goToMain(); //뒤로가기 버튼 만들기
+                  Navigator.pop(context); //뒤로가기 버튼 만들기
                 },
               ),
               title: Text(
@@ -139,7 +138,7 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                             .currentCategory,
                         secret: _secretSelected,
                         detail: _detailController.text,
-                        createdDate: DateTime.now().toUtc());
+                        createdDate: DateTime.now().toUtc(), lastComment: '');
                     await ItemService().createdNewItem(itemModel.toJson(), itemKey);
                     images.clear();
                     context.read<CategoryNotifier>().setNewCategory(

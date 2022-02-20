@@ -40,9 +40,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage('assets/솜사탕배경1.png'))),
+        color: Colors.cyanAccent,
         child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.transparent, //바탕화면을 투명한 색으로 해야함

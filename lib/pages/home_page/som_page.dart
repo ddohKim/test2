@@ -1,10 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/item_model.dart';
+import 'package:test2/pages/home_page/som_detail_page.dart';
 import 'package:test2/repository/item_service.dart';
 import 'package:test2/widgets/time_calculator.dart';
 
@@ -49,6 +49,12 @@ class SomPage extends StatelessWidget {
         return InkWell(
           //클릭을 하도록 만들어줌
           onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return SomDetailScreen(
+                itemKey: item.itemKey,
+              );
+            }));
             //context.beamToNamed('/$LOCATION_ITEM/:${item.itemKey}');
           },
           child: SizedBox(
@@ -58,7 +64,8 @@ class SomPage extends StatelessWidget {
                 SizedBox(
                     width: imgSize,
                     height: imgSize,
-                    child: item.secret==false?ExtendedImage.network(
+                    child:
+                    item.imageDownloadUrls.isEmpty?Icon(Icons.clear,size: 70,):item.secret==false?ExtendedImage.network(
                         item.imageDownloadUrls[0],
                         fit: BoxFit.cover,
                         shape: BoxShape.rectangle, //shape를 줘야 borderradious가 만들어짐

@@ -54,8 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           MaterialButton(
             onPressed: () {
-              Provider.of<PageNotifier>(context, listen: false)
-                  .goToOtherPage(UploadPage.pageName);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UploadPageWidget()),
+              );
             },
             shape: CircleBorder(),
             height: 40,

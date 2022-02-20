@@ -60,9 +60,10 @@ class MyApp extends StatelessWidget {
                 subtitle1: TextStyle(color: Colors.black, fontSize: 23),
                 subtitle2: TextStyle(color: Colors.grey, fontSize: 13),
                 button: TextStyle(color: Colors.white),
+                bodyText1: TextStyle(color: Colors.black,fontSize: 20),
                 bodyText2: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 11,
+                    color: Colors.black87,
+                    fontSize: 13,
                     fontWeight: FontWeight.w100))),
         title: 'Flutter Demo',
         home: Consumer<PageNotifier>(

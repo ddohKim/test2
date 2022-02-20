@@ -10,6 +10,7 @@ class ItemModel {
   late String detail;
   late DateTime createdDate;
   late DocumentReference? reference;
+  late String lastComment;
 
   ItemModel({
    required this.itemKey,
@@ -20,6 +21,7 @@ class ItemModel {
    required this.secret,
    required this.detail,
    required this.createdDate,
+    required this.lastComment,
     this.reference,});
 
   ItemModel.fromJson(Map<String, dynamic> json,this.itemKey,this.reference) {
@@ -31,6 +33,7 @@ class ItemModel {
     category = json['category']??"";
     secret = json['secret']??false;
     detail = json['detail']??"";
+    lastComment = json['lastComment']??"";
     createdDate = json['createdDate'] == null
         ? DateTime.now().toUtc()
         : (json['createdDate'] as Timestamp)
@@ -52,6 +55,7 @@ class ItemModel {
     map['secret'] = secret;
     map['detail'] = detail;
     map['createdDate'] = createdDate;
+    map['lastComment']=lastComment;
     return map;
   }
 
