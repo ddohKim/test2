@@ -13,12 +13,14 @@ class PageNotifier extends ChangeNotifier{
   PageNotifier(){
     FirebaseAuth.instance.authStateChanges().listen((user) { //로그인이 되면서 페이지 이동이 됨
       _user=user;
-      if(user==null) //로그인이 안된것
+      if(user==null) {
         goToOtherPage(StartPage.pageName);
-      else{
-        if(user.emailVerified) //email이 verified되어 있는지 확인
-        goToMain();
-      else goToOtherPage(CheckYourEmail.pageName);} //vertified가 안되어있으면 여기로 이동
+      } else{
+        if(user.emailVerified) {
+          goToMain();
+        } else {
+          goToOtherPage(CheckYourEmail.pageName);
+        }} //vertified가 안되어있으면 여기로 이동
     });
   }
   String? get currentPage=>_currentPage; //접근하도록
@@ -36,12 +38,14 @@ class PageNotifier extends ChangeNotifier{
     await FirebaseAuth.instance.currentUser!.reload(); //먼저 reload를 통해 sink를 맞춰줌
     User? user=FirebaseAuth.instance.currentUser; //이메일 verification이 true인지 아닌지 확인
 
-    if(user==null) //로그인이 안된것
+    if(user==null) {
       goToOtherPage(StartPage.pageName);
-    else{
-      if(user.emailVerified) //email이 verified되어 있는지 확인
+    } else{
+      if(user.emailVerified) {
         goToMain();
-      else goToOtherPage(CheckYourEmail.pageName);} //vertified가 안되어있으면 여기로 이동
+      } else {
+        goToOtherPage(CheckYourEmail.pageName);
+      }} //vertified가 안되어있으면 여기로 이동
   }
 
   Future _setNewUser(User? user)async{

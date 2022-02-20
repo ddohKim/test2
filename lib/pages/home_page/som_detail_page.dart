@@ -6,8 +6,8 @@ import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/comment_model.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/data/user_model.dart';
+import 'package:test2/pages/home_page/report_to_manager_page.dart';
 import 'package:test2/provider/page_notifier.dart';
-import 'package:test2/repository/comment_service.dart';
 import 'package:test2/repository/item_service.dart';
 import 'package:test2/states/comment_notifier.dart';
 import 'package:test2/widgets/comment.dart';
@@ -47,8 +47,7 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
 
   @override
   void initState() {
-    _commentNotifier=CommentNotifier(widget.itemKey);
-
+    _commentNotifier = CommentNotifier(widget.itemKey);
 
     _scrollController.addListener(() {
       //얼마나 스크롤 했는지 addListener로 확인하기
@@ -167,7 +166,9 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                       _divider,
                                       MaterialButton(
                                           padding: EdgeInsets.zero,
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            _reportItem();
+                                          },
                                           child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text('이 게시글 신고하기'))),
@@ -215,26 +216,32 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                 ChangeNotifierProvider<CommentNotifier>.value(
                                   value: _commentNotifier,
                                   child: Consumer<CommentNotifier>(
-                                    builder: (context,commentNotifier,child){
+                                    builder: (context, commentNotifier, child) {
                                       return SliverToBoxAdapter(
                                         child: ListView.separated(
-                                          physics: NeverScrollableScrollPhysics(),
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
-                                            padding: EdgeInsets.all(10),
+                                            padding: const EdgeInsets.all(10),
                                             itemBuilder: (context, index) {
-                                              bool isMine = commentNotifier.commentList[index].userKey==userModel.userKey;
+                                              bool isMine = commentNotifier
+                                                      .commentList[index]
+                                                      .userKey ==
+                                                  userModel.userKey;
                                               return Comment(
                                                 size: _size!,
                                                 isMine: isMine,
-                                                commentModel: commentNotifier.commentList[index],
+                                                commentModel: commentNotifier
+                                                    .commentList[index],
                                               );
                                             },
                                             separatorBuilder: (context, index) {
-                                              return SizedBox(
+                                              return const SizedBox(
                                                 height: 12,
                                               );
                                             },
-                                            itemCount: commentNotifier.commentList.length),
+                                            itemCount: commentNotifier
+                                                .commentList.length),
                                       );
                                     },
                                   ),
@@ -254,22 +261,21 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                       fillColor: Colors.white,
                                       filled: true,
                                       hintText: '댓글을 입력해주세요',
-                                      hintStyle: TextStyle(fontSize: 15),
-                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: const TextStyle(fontSize: 15),
+                                      contentPadding: const EdgeInsets.all(10),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(20),
                                       )),
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.send),
-                                onPressed: () async{
+                                icon: const Icon(Icons.send),
+                                onPressed: () async {
                                   CommentModel commentModel = CommentModel(
                                       comment: _commentController.text,
                                       userKey: userModel.userKey,
                                       createdDate: DateTime.now());
                                   _commentNotifier.addNewComment(commentModel);
-                                  print('${_commentController.text}');
                                   _commentController.clear();
                                 },
                               ),
@@ -285,7 +291,7 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                     //상태바+앱바 길이
                     child: Container(
                       height: kToolbarHeight + _statusBarHeight!,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -344,19 +350,21 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
               // your preferred effect
               onDotClicked: (index) {}),
         ),
-        background: PageView.builder(
-          controller: _pageController,
-          allowImplicitScrolling: true,
-          //미리 다른 화면들을 업로드 시켜 로딩이 시간이 안보이도록 해줌
-          itemBuilder: (context, index) {
-            return ExtendedImage.network(
-              itemModel.imageDownloadUrls[index],
-              fit: BoxFit.cover,
-              scale: 0.1,
-            );
-          },
-          itemCount: itemModel.imageDownloadUrls.length,
-        ),
+        background: itemModel.imageDownloadUrls.isEmpty
+            ? ExtendedImage.asset('assets/솜사탕_3.png')
+            : PageView.builder(
+                controller: _pageController,
+                allowImplicitScrolling: true,
+                //미리 다른 화면들을 업로드 시켜 로딩이 시간이 안보이도록 해줌
+                itemBuilder: (context, index) {
+                  return ExtendedImage.network(
+                    itemModel.imageDownloadUrls[index],
+                    fit: BoxFit.cover,
+                    scale: 0.1,
+                  );
+                },
+                itemCount: itemModel.imageDownloadUrls.length,
+              ),
       ),
     );
   }
@@ -371,7 +379,7 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
           height: _size!.width / 10,
           shape: BoxShape.circle,
         ),
-        SizedBox(
+        const SizedBox(
           width: common_small_padding,
         ),
         SizedBox(
@@ -409,4 +417,38 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
       ],
     );
   }
+
+  void _reportItem() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            titleTextStyle: const TextStyle(fontSize: 20, color: Colors.black),
+            contentTextStyle: const TextStyle(fontSize: 10, color: Colors.black),
+            title: const Text('이 게시글을 신고하겠습니까?'),
+            content: const Text(
+                '광고 및 부적적한 게시글의 경우 신고해주세요!\n담당자가 직접 검토하여 삭제하고 있습니다!\n(검토 후 게시글의 내용에 문제 없을시 삭제가 안될 수도 있어요!)'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('취소')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => const ReportToManagerPage()),);
+                  },
+                  child: const Text('신고'))
+            ],
+          );
+        });
+  }
+
+
 }

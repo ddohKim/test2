@@ -2,15 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/pages/home_page/upload_page.dart';
+import 'package:test2/pages/intro_page/splash_screen.dart';
 import 'package:test2/pages/login_page/check_your_email.dart';
 import 'package:test2/pages/my_home.dart';
 import 'package:test2/pages/start_page.dart';
 import 'package:test2/provider/page_notifier.dart';
 import 'package:test2/states/category_notifier.dart';
+import 'package:test2/states/report_to_manager_notifier.dart';
 import 'package:test2/states/select_image_notifier.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -23,22 +25,22 @@ class App extends StatelessWidget {
         future: Firebase.initializeApp(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Container(
-              child: Center(
-                child: Text("Something went wrong, please try again later!"),
-              ),
+            return const Center(
+              child: Text("Something went wrong, please try again later!"),
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return MyApp();
+            return const MyApp();
           }
 
-          return CircularProgressIndicator();
+          return const SplashScreen();
         });
   }
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class MyApp extends StatelessWidget {
           create: (_) => PageNotifier(),
         ),
         ChangeNotifierProvider.value(value: categoryNotifier),
+        ChangeNotifierProvider.value(value: reportToManagerNotifier),
         ChangeNotifierProvider(
           create: (context) => SelectImageNotifier(),
         )
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.lightBlue,
             fontFamily: 'NanumAJumMaJaYu',
-            textTheme: TextTheme(
+            textTheme: const TextTheme(
                 subtitle1: TextStyle(color: Colors.black, fontSize: 23),
                 subtitle2: TextStyle(color: Colors.grey, fontSize: 13),
                 button: TextStyle(color: Colors.white),
@@ -70,7 +73,7 @@ class MyApp extends StatelessWidget {
           builder: (context, pageNotifier, child) {
             return Navigator(
               pages: [
-                MaterialPage(
+                const MaterialPage(
                     //page들을 쌓을 수 있는데 가장 아래 페이지가 눈에 보여지게 됨
                     key: ValueKey(MyHomePage.pageName), //valuekey를 넣어줘야 함
                     child: MyHomePage()), //pages는 Page를 줘야해서 materialpage로 묶어줌

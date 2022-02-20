@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:test2/states/category_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:test2/states/report_to_manager_notifier.dart';
 
-class CategoryInputPage extends StatelessWidget {
-  const CategoryInputPage({Key? key}) : super(key: key);
+class ReportToManagerPage extends StatelessWidget {
+  const ReportToManagerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +30,23 @@ class CategoryInputPage extends StatelessWidget {
           },
         ),
         title: Text(
-          '카테고리 선택',
+          '신고하기',
           style: Theme.of(context).textTheme.headline6,
         ),
       ),
-      body: ListView.separated(
+      body:  ListView.separated(
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
-                context.read<CategoryNotifier>().setNewCategory(
-                    CategoryNotifier.categories.elementAt(index));
+                context.read<ReportToManagerNotifier>().setNewReport(
+                    ReportToManagerNotifier.report.elementAt(index));
                 Navigator.pop(context);
               },
               title: Text(
-                CategoryNotifier.categories.elementAt(index),
+                ReportToManagerNotifier.report.elementAt(index),
                 style: TextStyle(
-                    color: context.read<CategoryNotifier>().currentCategory ==
-                            CategoryNotifier.categories.elementAt(index)
+                    color: context.read<ReportToManagerNotifier>().currentCategory ==
+                        ReportToManagerNotifier.report.elementAt(index)
                         ? Theme.of(context).primaryColor
                         : Colors.black87),
               ),
@@ -59,7 +59,8 @@ class CategoryInputPage extends StatelessWidget {
               color: Colors.grey[300],
             );
           },
-          itemCount: CategoryNotifier.categories.length),
+          itemCount: ReportToManagerNotifier.report.length)
+      ,
     );
   }
 }
