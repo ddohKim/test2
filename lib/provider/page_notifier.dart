@@ -17,15 +17,15 @@ class PageNotifier extends ChangeNotifier{
         goToOtherPage(StartPage.pageName);
       } else{
         if(user.emailVerified) {
-          goToMain();
+          goToMain('');
         } else {
           goToOtherPage(CheckYourEmail.pageName);
         }} //vertified가 안되어있으면 여기로 이동
     });
   }
   String? get currentPage=>_currentPage; //접근하도록
-  void goToMain()async{
-    await _setNewUser(user);
+  void goToMain(String userNickName)async{
+    await _setNewUser(user,userNickName);
     _currentPage=MyHomePage.pageName;
     notifyListeners();
   }
@@ -34,7 +34,7 @@ class PageNotifier extends ChangeNotifier{
     notifyListeners();
   }
 
-  void refresh()async{
+  void refresh(String? userNickName)async{
     await FirebaseAuth.instance.currentUser!.reload(); //먼저 reload를 통해 sink를 맞춰줌
     User? user=FirebaseAuth.instance.currentUser; //이메일 verification이 true인지 아닌지 확인
 
@@ -42,18 +42,18 @@ class PageNotifier extends ChangeNotifier{
       goToOtherPage(StartPage.pageName);
     } else{
       if(user.emailVerified) {
-        goToMain();
+        goToMain(userNickName!);
       } else {
         goToOtherPage(CheckYourEmail.pageName);
       }} //vertified가 안되어있으면 여기로 이동
   }
 
-  Future _setNewUser(User? user)async{
+  Future _setNewUser(User? user,String? userNickName)async{
     _user=user;
     if(user!=null&&user.email!=null)
     {String emailAddress=user.email!;
     String userKey=user.uid;
-    UserModel userModel=UserModel(emailAddress: emailAddress, createdDate: DateTime.now().toUtc(), userKey: userKey);
+    UserModel userModel=UserModel(emailAddress: emailAddress, createdDate: DateTime.now().toUtc(), userKey: userKey,nickName: userNickName);
     await UserService().createdNewUser(userModel.toJson(), userKey);//UserService()가 한번만 생성되도록 해줌!
     _userModel=await UserService().getUserModel(userKey); //_userModel 받아오기
     }

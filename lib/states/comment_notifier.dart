@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test2/data/comment_model.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/repository/comment_service.dart';
+import 'package:test2/repository/item_service.dart';
 
 class CommentNotifier extends ChangeNotifier{
   late ItemModel _itemModel;
@@ -36,6 +37,7 @@ class CommentNotifier extends ChangeNotifier{
      CommentService().createdNewComment(
         _itemKey, commentModel);
   }
+
 
   ItemModel get itemModel => _itemModel;
   String get itemKey => _itemKey;

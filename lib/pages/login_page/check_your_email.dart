@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:test2/provider/page_notifier.dart';
 
 class CheckYourEmail extends Page {
-  static final pageName = "CheckYourEmail";
+  static const pageName = "CheckYourEmail";
 
   Route createRoute(BuildContext context) {
     return MaterialPageRoute(
@@ -19,15 +19,22 @@ class CheckYourEmail extends Page {
 
 class CheckYourEmailWidget extends StatefulWidget {
   CheckYourEmailWidget({Key? key}) : super(key: key);
-
   @override
   _AuthWidgetState createState() => _AuthWidgetState();
 }
 
 class _AuthWidgetState extends State<CheckYourEmailWidget> {
+  String? _nickUserName;
+  TextEditingController _nickNameController=TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _emailverified=false;
   @override
+
+  void dispose() {
+    _nickNameController.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Material(
       child: Container(
@@ -100,8 +107,8 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
 
   Widget _emailVerified(BuildContext context) {
     return FlatButton(
-      onPressed: () async {
-        Provider.of<PageNotifier>(context, listen: false).refresh();
+      onPressed: ()  {
+        _nickName();
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       padding: EdgeInsets.all(16),
@@ -129,4 +136,34 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
       ),
     );
   }
+
+  void _nickName() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            titleTextStyle: const TextStyle(fontSize: 20, color: Colors.black),
+            contentTextStyle: const TextStyle(fontSize: 10, color: Colors.black),
+            title: const Text('닉네임을 설정하세요'),
+            content: TextFormField(
+          controller: _nickNameController,
+          decoration: InputDecoration(
+          hintText: '중복하여 닉네임을 설정할 수 있습니다',
+          border: UnderlineInputBorder(
+          borderSide: BorderSide.none))),
+            actions: [
+              TextButton(
+                    onPressed: () async {_nickUserName=_nickNameController.text;
+                      Provider.of<PageNotifier>(context, listen: false).refresh(_nickUserName);
+                      Navigator.pop(context);
+                    },
+           child: Text('완료'),)
+            ],
+          );
+        });
+  }
+
 }

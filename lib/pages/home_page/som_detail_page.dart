@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:test2/constants/common_size.dart';
+
 import 'package:test2/data/comment_model.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/data/user_model.dart';
@@ -16,7 +17,7 @@ import 'package:test2/widgets/time_calculator.dart';
 class SomDetailScreen extends StatefulWidget {
   final String itemKey;
 
-  const SomDetailScreen({
+   SomDetailScreen({
     Key? key,
     required this.itemKey,
   }) : super(key: key);
@@ -30,9 +31,10 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
   PageController _pageController = PageController();
   ScrollController _scrollController = ScrollController();
   Size? _size;
+  bool selectedHeart=false;
+
   num? _statusBarHeight;
   num? _statusBottomBarHeight;
-
   late CommentNotifier _commentNotifier;
 
   bool isAppbarCollapsed = false;
@@ -85,11 +87,13 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             ItemModel itemModel = snapshot.data!;
+            int heartNumber=itemModel.heartNumber;
             UserModel userModel =
                 context.read<PageNotifier>().userModel!; //provider를 통해서 가져옴
             return LayoutBuilder(
+
                 builder: (BuildContext context, BoxConstraints constraints) {
-              _size = MediaQuery.of(context).size;
+                  _size = MediaQuery.of(context).size;
               _statusBarHeight =
                   MediaQuery.of(context).padding.top; //statusbar 길이
               _statusBottomBarHeight = MediaQuery.of(context).padding.bottom;
@@ -111,8 +115,25 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                             child: Row(
                               children: [
                                 IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite_border)),
+                                  onPressed: ()  async {
+                                    setState(() {
+                                      selectedHeart = !selectedHeart;
+                                      if (selectedHeart == true) {
+                                        heartNumber+=1;
+                                      }
+                                      else{
+                                        heartNumber-=1;
+                                      }
+
+                                    });
+
+itemModel.heartNumber=heartNumber;
+                                    await ItemService().createdNewItem(itemModel.itemKey, itemModel);
+                                  },
+                                  icon: Icon(selectedHeart
+                                      ? Icons.favorite
+                                      : Icons.favorite_border),
+                                ),
                                 VerticalDivider(
                                   thickness: 1,
                                   width: common_small_padding * 2 + 1,
@@ -157,7 +178,7 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                       ),
                                       _textGap,
                                       Text(
-                                        '❤️ 33',
+                                        '❤️ ${itemModel.heartNumber}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!
@@ -389,7 +410,9 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                userModel.emailAddress, //
+                itemModel.nickName.isEmpty
+                    ? itemModel.userKey.substring(1, 5)
+                    : itemModel.nickName, //
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ],
@@ -427,7 +450,8 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             titleTextStyle: const TextStyle(fontSize: 20, color: Colors.black),
-            contentTextStyle: const TextStyle(fontSize: 10, color: Colors.black),
+            contentTextStyle:
+                const TextStyle(fontSize: 10, color: Colors.black),
             title: const Text('이 게시글을 신고하겠습니까?'),
             content: const Text(
                 '광고 및 부적적한 게시글의 경우 신고해주세요!\n담당자가 직접 검토하여 삭제하고 있습니다!\n(검토 후 게시글의 내용에 문제 없을시 삭제가 안될 수도 있어요!)'),
@@ -440,15 +464,14 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
               TextButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => const ReportToManagerPage()),);
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReportToManagerPage()),
+                    );
                   },
                   child: const Text('신고'))
             ],
           );
         });
   }
-
-
 }

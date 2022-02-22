@@ -11,6 +11,9 @@ class ItemModel {
   late DateTime createdDate;
   late DocumentReference? reference;
   late String lastComment;
+  late String nickName;
+  late int heartNumber;
+  late int chatNumber;
 
   ItemModel({
    required this.itemKey,
@@ -22,9 +25,15 @@ class ItemModel {
    required this.detail,
    required this.createdDate,
     required this.lastComment,
+    required this.nickName,
+    required this.heartNumber,
+    required this.chatNumber,
     this.reference,});
 
   ItemModel.fromJson(Map<String, dynamic> json,this.itemKey,this.reference) {
+    chatNumber=json['chatNumber']??0;
+    heartNumber=json['heartNumber']??0;
+     nickName= json['nickName']??"";
     userKey = json['userKey']??"";
     imageDownloadUrls = json['imageDownloadUrls'] != null
         ? json['imageDownloadUrls'].cast<String>()
@@ -48,6 +57,7 @@ class ItemModel {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['nickName'] = nickName;
     map['userKey'] = userKey;
     map['imageDownloadUrls'] = imageDownloadUrls;
     map['title'] = title;
@@ -56,6 +66,8 @@ class ItemModel {
     map['detail'] = detail;
     map['createdDate'] = createdDate;
     map['lastComment']=lastComment;
+    map['chatNumber']=chatNumber;
+    map['heartNumber']=heartNumber;
     return map;
   }
 

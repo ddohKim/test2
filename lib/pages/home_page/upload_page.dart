@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/item_model.dart';
+import 'package:test2/data/user_model.dart';
 import 'package:test2/pages/home_page/category_input_page.dart';
 import 'package:test2/pages/home_page/multi_image_select.dart';
 import 'package:test2/provider/page_notifier.dart';
@@ -118,7 +119,9 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
 
                     final String userKey=FirebaseAuth.instance.currentUser!.uid;
                     final String itemKey = ItemModel.generateItemKey(userKey);
-
+                    UserModel _userModel =
+                    context.read<PageNotifier>().userModel!;
+                    String? nickName=_userModel.nickName;
                     _isCreatingItem = true;
                     setState(() {
 
@@ -129,6 +132,9 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                     List<String> downloadUrls = await ImageStorage.uploadImages(images,itemKey);
                     //firebasestorage에 저장되어 있는 사진의 다운로드url을 받아옴
                     ItemModel itemModel = ItemModel(
+                      chatNumber: 0,
+                        heartNumber: 0,
+                        nickName: nickName!,
                         itemKey: itemKey,
                         userKey: userKey,
                         imageDownloadUrls: downloadUrls,
@@ -139,7 +145,7 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                         secret: _secretSelected,
                         detail: _detailController.text,
                         createdDate: DateTime.now().toUtc(), lastComment: '');
-                    await ItemService().createdNewItem(itemModel.toJson(), itemKey);
+                    await ItemService().createdNewItem(itemKey,itemModel );
                     images.clear();
                     context.read<CategoryNotifier>().setNewCategory(
                         CategoryNotifier.categories.first);

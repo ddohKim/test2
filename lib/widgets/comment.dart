@@ -20,7 +20,7 @@ class Comment extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          child: Text(TimeCalculator().getTimeDiff(commentModel.createdDate)),
+          child: Text(commentModel.comment) ,
           padding: EdgeInsets.symmetric(vertical: 12,horizontal: 16),
           constraints: BoxConstraints(minHeight: 40,maxWidth: size.width*0.6),
           decoration: BoxDecoration(
@@ -31,7 +31,7 @@ class Comment extends StatelessWidget {
                   bottomRight: roundedCorner,
                   bottomLeft: roundedCorner)),),
            SizedBox(width: 6,),
-          Text(commentModel.createdDate.toIso8601String()),
+        Text(TimeCalculator().getTimeDiff(commentModel.createdDate)),
       ],
     );
   }

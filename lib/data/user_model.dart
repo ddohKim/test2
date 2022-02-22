@@ -6,15 +6,18 @@ class UserModel {
   late DateTime createdDate;
   late String userKey;
   DocumentReference? reference;
+   String? nickName;
 
   UserModel({
     required this.emailAddress,
     required this.createdDate,
     required this.userKey,
+    this.nickName,
     this.reference,
   });
 
   UserModel.fromJson(Map<String, dynamic> json, this.userKey, this.reference) {
+   nickName=json['nickName'];
     emailAddress = json['emailAddress'];
     createdDate = json['createdDate'] == null
         ? DateTime.now().toUtc()
@@ -29,6 +32,7 @@ class UserModel {
     final map = <String, dynamic>{};
     map['emailAddress'] = emailAddress;
     map['createdDate'] = createdDate;
+    map['nickName']=nickName;
     return map;
   }
 }

@@ -52,7 +52,7 @@ class SomPage extends StatelessWidget {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
               return SomDetailScreen(
-                itemKey: item.itemKey,
+                itemKey: item.itemKey
               );
             }));
             //context.beamToNamed('/$LOCATION_ITEM/:${item.itemKey}');

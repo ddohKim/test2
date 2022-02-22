@@ -208,13 +208,11 @@ class _AuthPageState extends State<AuthPage> {
                       }),
                       _buildSocialButton(
                           'assets/icons8-facebook-48.png', () {
-                        Provider.of<PageNotifier>(context, listen: false)
-                            .goToMain();
+
                       }),
                       _buildSocialButton(
                           'assets/icons8-apple-logo-48.png', () {
-                        Provider.of<PageNotifier>(context, listen: false)
-                            .goToMain();
+
                       }),
                     ],
                   ) //button을 나열하는 것
