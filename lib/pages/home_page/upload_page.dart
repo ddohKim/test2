@@ -132,8 +132,8 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                     List<String> downloadUrls = await ImageStorage.uploadImages(images,itemKey);
                     //firebasestorage에 저장되어 있는 사진의 다운로드url을 받아옴
                     ItemModel itemModel = ItemModel(
+                      heartNumber: [],
                       chatNumber: 0,
-                        heartNumber: 0,
                         nickName: nickName!,
                         itemKey: itemKey,
                         userKey: userKey,
@@ -145,7 +145,7 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                         secret: _secretSelected,
                         detail: _detailController.text,
                         createdDate: DateTime.now().toUtc(), lastComment: '');
-                    await ItemService().createdNewItem(itemKey,itemModel );
+                    await ItemService().createdNewItem(itemModel.toJson(), itemKey);
                     images.clear();
                     context.read<CategoryNotifier>().setNewCategory(
                         CategoryNotifier.categories.first);

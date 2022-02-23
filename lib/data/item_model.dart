@@ -12,7 +12,7 @@ class ItemModel {
   late DocumentReference? reference;
   late String lastComment;
   late String nickName;
-  late int heartNumber;
+  late List<dynamic> heartNumber;
   late int chatNumber;
 
   ItemModel({
@@ -26,13 +26,13 @@ class ItemModel {
    required this.createdDate,
     required this.lastComment,
     required this.nickName,
-    required this.heartNumber,
+     required this.heartNumber,
     required this.chatNumber,
     this.reference,});
 
   ItemModel.fromJson(Map<String, dynamic> json,this.itemKey,this.reference) {
     chatNumber=json['chatNumber']??0;
-    heartNumber=json['heartNumber']??0;
+    heartNumber=json['heartNumber']??[];
      nickName= json['nickName']??"";
     userKey = json['userKey']??"";
     imageDownloadUrls = json['imageDownloadUrls'] != null

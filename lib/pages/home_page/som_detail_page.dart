@@ -87,7 +87,6 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             ItemModel itemModel = snapshot.data!;
-            int heartNumber=itemModel.heartNumber;
             UserModel userModel =
                 context.read<PageNotifier>().userModel!; //provider를 통해서 가져옴
             return LayoutBuilder(
@@ -115,24 +114,15 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: ()  async {
+                                  onPressed: () async  {
+                                  await  ItemService().toggleLike(userModel.userKey, itemModel.itemKey,itemModel);
                                     setState(() {
-                                      selectedHeart = !selectedHeart;
-                                      if (selectedHeart == true) {
-                                        heartNumber+=1;
-                                      }
-                                      else{
-                                        heartNumber-=1;
-                                      }
-
-                                    });
-
-itemModel.heartNumber=heartNumber;
-                                    await ItemService().createdNewItem(itemModel.itemKey, itemModel);
+                                 });
                                   },
-                                  icon: Icon(selectedHeart
+                                  icon: Icon(itemModel.heartNumber.contains(userModel.userKey)
                                       ? Icons.favorite
                                       : Icons.favorite_border),
+
                                 ),
                                 VerticalDivider(
                                   thickness: 1,
@@ -178,7 +168,7 @@ itemModel.heartNumber=heartNumber;
                                       ),
                                       _textGap,
                                       Text(
-                                        '❤️ ${itemModel.heartNumber}',
+                                        '❤️ ${itemModel.heartNumber.length}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!

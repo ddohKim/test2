@@ -9,22 +9,36 @@ class ItemService {
 
   ItemService._internal();
 
-  Future createdNewItem( String itemKey,ItemModel itemModel) async {
-    DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
-    final DocumentSnapshot documentSnapshot = await documentReference.get();
-    DocumentReference<Map<String, dynamic>> heartNumber =
-    FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
-    if (!documentSnapshot.exists) {
-      await documentReference.set(itemModel.toJson());
+  Future createdNewItem(Map<String, dynamic>json,String itemKey) async{
+    DocumentReference<Map<String,dynamic>> documentReference=FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
+    final DocumentSnapshot documentSnapshot=await documentReference.get();
+    if(!documentSnapshot.exists){
+      await documentReference.set(json);
     }
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      transaction.set(documentReference, itemModel.toJson());
-      transaction
-          .update(heartNumber, {'heartNumber': itemModel.heartNumber});
-    });
   }
+  Future<void> toggleLike(String userKey,String itemKey,ItemModel itemModel) async{
+    final DocumentReference documentReference=FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
+    final DocumentSnapshot documentSnapshot=await documentReference.get();
+    if(documentSnapshot.exists){
+      if((documentSnapshot.data() as Map<String,dynamic>)['heartNumber'].contains(userKey)){
+        await FirebaseFirestore.instance.runTransaction((transaction) async {
+         // transaction.set(documentReference, itemModel.toJson());
+          transaction.update(documentReference,
+              {'heartNumber': FieldValue.arrayRemove([userKey])});
+        });
+      }
+      else {
+        //documentReference.update({'heartNumber':FieldValue.arrayUnion([userKey])});
+        await FirebaseFirestore.instance.runTransaction((transaction) async {
+         // transaction.set(documentReference, itemModel.toJson());
+          transaction.update(documentReference,
+              {'heartNumber': FieldValue.arrayUnion([userKey])});
+        });
+      }
+    }
 
+
+  }
 
 
   Future<ItemModel> getItem(String itemKey) async {

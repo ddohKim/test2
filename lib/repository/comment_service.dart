@@ -14,23 +14,27 @@ class CommentService {
 
   Future createdNewComment(String itemKey, CommentModel commentModel) async {
     DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance
-            .collection(COL_ITEMS)
-            .doc(itemKey)
-            .collection(COL_COMMENTS)
-            .doc();
+    FirebaseFirestore.instance
+        .collection(COL_ITEMS)
+        .doc(itemKey)
+        .collection(COL_COMMENTS)
+        .doc();
 
     DocumentReference<Map<String, dynamic>> commentRoomDocRef =
-        FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
+    FirebaseFirestore.instance.collection(COL_ITEMS).doc(itemKey);
 
+    DocumentSnapshot documentSnapshot=await commentRoomDocRef.get(); //
+    int numofComments=documentSnapshot['chatNumber'];
     await documentReference.set(commentModel.toJson());
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       transaction.set(documentReference, commentModel.toJson());
       transaction
-          .update(commentRoomDocRef, {'lastComment': commentModel.comment});
+          .update(commentRoomDocRef, {'lastComment': commentModel.comment,'chatNumber':numofComments+1});
     });
   }
+
+
 
   Stream<ItemModel> connectComment(String itemKey) {
     return FirebaseFirestore.instance
@@ -63,6 +67,10 @@ class CommentService {
     });
     return commentList;
   }
+
+
+
+
 
   Future<List<CommentModel>> getLatestCommentList(
       String itemKey, DocumentReference currentLastestComment) async {

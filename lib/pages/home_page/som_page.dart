@@ -6,6 +6,7 @@ import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/pages/home_page/som_detail_page.dart';
 import 'package:test2/repository/item_service.dart';
+import 'package:test2/states/comment_notifier.dart';
 import 'package:test2/widgets/time_calculator.dart';
 
 class SomPage extends StatelessWidget {
@@ -32,6 +33,8 @@ class SomPage extends StatelessWidget {
       });
             }
 
+
+
   ListView _listView(double imgSize, List<ItemModel> items) {
     return ListView.separated(
       shrinkWrap: true,
@@ -45,7 +48,9 @@ class SomPage extends StatelessWidget {
         );
       },
       itemBuilder: (context, index) {
+
         ItemModel item = items[items.length-index-1]; //reverse
+        CommentNotifier commentNotifier=CommentNotifier(item.itemKey);
         return InkWell(
           //클릭을 하도록 만들어줌
           onTap: () {
@@ -90,7 +95,7 @@ class SomPage extends StatelessWidget {
                             Text('카테고리: ${item.category}',style: Theme.of(context).textTheme.subtitle2,),
                           ],
                         ),
-                        Text(""),
+                        Text(''),
                         Text(item.secret==false?
                         item.detail.length>20?
                             '${item.detail.substring(0,20)}...':'${item.detail}':"",style: Theme.of(context).textTheme.subtitle2),
@@ -114,7 +119,7 @@ class SomPage extends StatelessWidget {
                                       color: Colors.grey,
                                     ),
                                     Text(
-                                      '23',
+                                      item.chatNumber.toString(),
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                     Icon(
@@ -122,7 +127,7 @@ class SomPage extends StatelessWidget {
                                       color: Colors.grey,
                                     ),
                                     Text(
-                                      '30',
+                                      item.heartNumber.length.toString(),
                                       style: TextStyle(color: Colors.grey),
                                     )
                                   ],
