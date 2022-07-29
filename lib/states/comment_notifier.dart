@@ -21,7 +21,7 @@ class CommentNotifier extends ChangeNotifier{
         }
       else{
         if(_commentList[0].reference==null)
-          _commentList.removeAt(0);
+         { _commentList.removeAt(0);}
         CommentService().getLatestCommentList(_itemKey, _commentList[0].reference!).then((latestComments){
           _commentList.insertAll(0, latestComments);
           notifyListeners();

@@ -20,7 +20,7 @@ class IntroPage3 extends StatelessWidget {
                   SizedBox(height: 40,),
                   Text('사',style: TextStyle(fontSize: 40),),
                   Text('사랑의 설레이는 일기장',style: TextStyle(fontSize: 35),),
-                  SizedBox(width: imgSize,height: imgSize,
+                  SizedBox(width: imgSize*0.7,height: imgSize*0.7,
                     child: Positioned(//left, right 값을 줬으면 width값은 주면 안됨(이미 결정되있기 때문)
                         width: sizeOfPosImg,
                         left: imgSize*0.3,

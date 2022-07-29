@@ -91,7 +91,8 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                 context.read<PageNotifier>().userModel!; //provider를 통해서 가져옴
             return LayoutBuilder(
 
-                builder: (BuildContext context, BoxConstraints constraints) {
+                builder: (BuildContext context, BoxConstraints constraints)  {
+
                   _size = MediaQuery.of(context).size;
               _statusBarHeight =
                   MediaQuery.of(context).padding.top; //statusbar 길이
@@ -115,6 +116,9 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                               children: [
                                 IconButton(
                                   onPressed: () async  {
+setState(() {
+
+});
                                   await  ItemService().toggleLike(userModel.userKey, itemModel.itemKey,itemModel);
                                     setState(() {
                                  });
@@ -123,7 +127,8 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                       ? Icons.favorite
                                       : Icons.favorite_border),
 
-                                ),
+                                )
+                                ,
                                 VerticalDivider(
                                   thickness: 1,
                                   width: common_small_padding * 2 + 1,
@@ -168,7 +173,8 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                                       ),
                                       _textGap,
                                       Text(
-                                        '❤️ ${itemModel.heartNumber.length}',
+
+                                        '❤️ ${ itemModel.heartNumber.length}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!
@@ -456,7 +462,7 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ReportToManagerPage()),
+                          builder: (context) =>  ReportToManagerPage(itemKey: widget.itemKey)),
                     );
                   },
                   child: const Text('신고'))

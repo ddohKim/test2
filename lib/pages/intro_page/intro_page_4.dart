@@ -21,7 +21,7 @@ class IntroPage4 extends StatelessWidget {
                   Text('탕',style: TextStyle(fontSize: 40),),
                   Text('탕진은 안하겠죠?ㅠㅠ',style: TextStyle(fontSize: 35),),
                   SizedBox(height: 20,),
-                  SizedBox(width: imgSize,height: imgSize,
+                  SizedBox(width: imgSize*0.7,height: imgSize*0.7,
                     child: Positioned(//left, right 값을 줬으면 width값은 주면 안됨(이미 결정되있기 때문)
                         width: sizeOfPosImg,
                         left: imgSize*0.3,

@@ -57,10 +57,13 @@ class MyApp extends StatelessWidget {
       ], //pagenotifier의 기본값 currentpage=MyHomePage.pagename
       child: MaterialApp(
         theme: ThemeData(
+          appBarTheme: AppBarTheme(backgroundColor: Colors.cyanAccent, elevation: 2,),
             primarySwatch: Colors.lightBlue,
             fontFamily: 'NanumAJumMaJaYu',
             textTheme: const TextTheme(
+
                 subtitle1: TextStyle(color: Colors.black, fontSize: 23),
+                headline4: TextStyle(color: Colors.black,fontSize: 30),
                 subtitle2: TextStyle(color: Colors.grey, fontSize: 13),
                 button: TextStyle(color: Colors.white),
                 bodyText1: TextStyle(color: Colors.black,fontSize: 20),

@@ -38,14 +38,14 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        color: Colors.cyanAccent,
-        child: Scaffold(
-          key: _scaffoldKey,
-          backgroundColor: Colors.transparent, //바탕화면을 투명한 색으로 해야함
-          body: SafeArea(
-            child: Form(
+    return SafeArea(
+      child: Material(
+        child: Container(
+          color: Colors.cyanAccent,
+          child: Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: Colors.transparent, //바탕화면을 투명한 색으로 해야함
+            body: Form(
               //입력창을 만드는 form
               key: _formKey,
               child: ListView(
@@ -194,7 +194,7 @@ class _AuthPageState extends State<AuthPage> {
                         backgroundColor: Colors.white54),
                   ),
                   Divider(
-                    height: 51,
+                    height: 30,
                     thickness: 1,
                     color: Colors.white,
                     indent: 10,

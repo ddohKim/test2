@@ -22,8 +22,8 @@ class ItemService {
     if(documentSnapshot.exists){
       if((documentSnapshot.data() as Map<String,dynamic>)['heartNumber'].contains(userKey)){
         await FirebaseFirestore.instance.runTransaction((transaction) async {
-         // transaction.set(documentReference, itemModel.toJson());
-          transaction.update(documentReference,
+          //transaction.set(documentReference, itemModel.toJson());
+           transaction.update(documentReference,
               {'heartNumber': FieldValue.arrayRemove([userKey])});
         });
       }
@@ -36,7 +36,6 @@ class ItemService {
         });
       }
     }
-
 
   }
 

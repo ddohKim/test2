@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:test2/pages/home_page/report_upload_page.dart';
 import 'package:test2/states/report_to_manager_notifier.dart';
 
-class ReportToManagerPage extends StatelessWidget {
-  const ReportToManagerPage({Key? key}) : super(key: key);
+class ReportToManagerPage extends StatefulWidget {
+  final String itemKey;
+  const ReportToManagerPage({Key? key,required this.itemKey}) : super(key: key);
 
+  @override
+  State<ReportToManagerPage> createState() => _ReportToManagerPageState();
+}
+
+class _ReportToManagerPageState extends State<ReportToManagerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +47,15 @@ class ReportToManagerPage extends StatelessWidget {
               onTap: () {
                 context.read<ReportToManagerNotifier>().setNewReport(
                     ReportToManagerNotifier.report.elementAt(index));
-                Navigator.pop(context);
+                setState(() {
+
+                });
+                //Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReportUploadPage(itemKey: widget.itemKey,)),
+                );
               },
               title: Text(
                 ReportToManagerNotifier.report.elementAt(index),

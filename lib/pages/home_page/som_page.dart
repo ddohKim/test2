@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,12 +8,16 @@ import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/pages/home_page/som_detail_page.dart';
 import 'package:test2/repository/item_service.dart';
-import 'package:test2/states/comment_notifier.dart';
 import 'package:test2/widgets/time_calculator.dart';
 
-class SomPage extends StatelessWidget {
+class SomPage extends StatefulWidget {
   const SomPage({Key? key}) : super(key: key);
 
+  @override
+  State<SomPage> createState() => _SomPageState();
+}
+
+class _SomPageState extends State<SomPage> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -24,16 +30,35 @@ class SomPage extends StatelessWidget {
         return FutureBuilder<List<ItemModel>>(
             future: ItemService().getItems(),
             builder: (context, snapshot) {
-              return AnimatedSwitcher(
-                  duration: Duration(milliseconds: 700),
-                  child: (snapshot.hasData && snapshot.data!.isNotEmpty)
-                      ? _listView(imgSize, snapshot.data!)
-                      : _shimmerListView(imgSize));
+              return Scaffold(
+                body: RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child:AnimatedSwitcher(
+                      duration: Duration(milliseconds: 1000),
+                      child: (snapshot.hasData && snapshot.data!.isNotEmpty)
+                          ? _listView(imgSize, snapshot.data!)
+                          : _shimmerListView(imgSize)) ,
+                ),
+              );
             });
       });
             }
 
 
+Future<void> _onRefresh()async {
+   await ItemService().getItems();
+  return Future<void>.value();
+
+}
+
+
+FutureOr onGoBack(dynamic value) async{
+  await ItemService().getItems();
+  Future<void>.value();
+  setState(() {
+
+  });
+}
 
   ListView _listView(double imgSize, List<ItemModel> items) {
     return ListView.separated(
@@ -50,16 +75,16 @@ class SomPage extends StatelessWidget {
       itemBuilder: (context, index) {
 
         ItemModel item = items[items.length-index-1]; //reverse
-        CommentNotifier commentNotifier=CommentNotifier(item.itemKey);
         return InkWell(
           //클릭을 하도록 만들어줌
           onTap: () {
+
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
               return SomDetailScreen(
-                itemKey: item.itemKey
+                  itemKey: item.itemKey
               );
-            }));
+            })).then(onGoBack);
             //context.beamToNamed('/$LOCATION_ITEM/:${item.itemKey}');
           },
           child: SizedBox(
@@ -71,11 +96,11 @@ class SomPage extends StatelessWidget {
                     height: imgSize,
                     child:
                     item.imageDownloadUrls.isEmpty?Icon(Icons.clear,size: 70,):item.secret==false?ExtendedImage.network(
-                        item.imageDownloadUrls[0],
-                        fit: BoxFit.cover,
-                        shape: BoxShape.rectangle, //shape를 줘야 borderradious가 만들어짐
-                        borderRadius: BorderRadius.circular(12),
-                      ):Icon(Icons.lock,size: 70,)),
+                      item.imageDownloadUrls[0],
+                      fit: BoxFit.cover,
+                      shape: BoxShape.rectangle, //shape를 줘야 borderradious가 만들어짐
+                      borderRadius: BorderRadius.circular(12),
+                    ):Icon(Icons.lock,size: 70,)),
                 SizedBox(
                   width: common_small_padding,
                 ),
@@ -98,7 +123,7 @@ class SomPage extends StatelessWidget {
                         Text(''),
                         Text(item.secret==false?
                         item.detail.length>20?
-                            '${item.detail.substring(0,20)}...':'${item.detail}':"",style: Theme.of(context).textTheme.subtitle2),
+                        '${item.detail.substring(0,20)}...':'${item.detail}':"",style: Theme.of(context).textTheme.subtitle2),
                         Expanded(child: Container()),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,6 +170,7 @@ class SomPage extends StatelessWidget {
       },
       itemCount: items.length,
     );
+
   }
 
   Widget _shimmerListView(double imgSize) {

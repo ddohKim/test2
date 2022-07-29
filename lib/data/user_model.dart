@@ -17,7 +17,7 @@ class UserModel {
   });
 
   UserModel.fromJson(Map<String, dynamic> json, this.userKey, this.reference) {
-   nickName=json['nickName'];
+   nickName=json['nickName']??"";
     emailAddress = json['emailAddress'];
     createdDate = json['createdDate'] == null
         ? DateTime.now().toUtc()

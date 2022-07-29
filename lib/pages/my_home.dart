@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test2/pages/home_page/som_page.dart';
 import 'package:test2/pages/home_page/upload_page.dart';
+import 'package:test2/pages/search_page/search_page.dart';
 import 'package:test2/provider/page_notifier.dart';
 import 'package:test2/repository/user_service.dart';
 import 'package:test2/widgets/expandable_fat.dart';
+
+import 'home_page/my_profile_page.dart';
 
 class MyHomePage extends StatefulWidget {
   static const String? pageName = 'MyHomePage'; //value key 지정해줌
@@ -19,12 +24,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _bottomSelectedIndex = 0;
 
+  FutureOr onGoBack(dynamic value) {
+    Future<void>.value();
+    setState(() {
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
-        elevation: 2,
         centerTitle: false,
         title: _bottomSelectedIndex == 0
             ? _appbartext('솜')
@@ -36,7 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SearchPage()),
+                ).then(onGoBack);
               },
               icon: Icon(
                 CupertinoIcons.search,
@@ -58,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => UploadPageWidget()),
-              );
+              ).then(onGoBack);
             },
             shape: CircleBorder(),
             height: 40,
@@ -91,9 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             color: Colors.accents[3],
           ),
-          Container(
-            color: Colors.accents[4],
-          ),
+          MyProfilePage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -105,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: ''),
+          const BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: ''),
           BottomNavigationBarItem(
               icon: Icon(_bottomSelectedIndex == 1
                   ? Icons.screen_share

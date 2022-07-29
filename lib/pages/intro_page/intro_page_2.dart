@@ -20,7 +20,7 @@ class IntroPage2 extends StatelessWidget {
                   SizedBox(height: 40,),
                   Text('솜',style: TextStyle(fontSize: 40),),
                   Text('솜털처럼 포근하게 고민을 들어줄게요',style: TextStyle(fontSize: 35),),
-                  SizedBox(width: imgSize,height: imgSize,
+                  SizedBox(width: imgSize*0.7,height: imgSize*0.7,
                     child: Positioned(//left, right 값을 줬으면 width값은 주면 안됨(이미 결정되있기 때문)
                         width: sizeOfPosImg,
                         left: imgSize*0.3,
