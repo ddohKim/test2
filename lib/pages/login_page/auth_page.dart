@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/states/page_notifier.dart';
 
 class AuthPage extends StatefulWidget {
   static const String? pageName = 'AuthPage'; //value key 지정해줌
@@ -182,6 +182,7 @@ class _AuthPageState extends State<AuthPage> {
                       }
                         }
                       }
+                      await Future.delayed(Duration(milliseconds: 1000));
                     },
                     child: Text(
                       isRegister ? "새로만들기" : "로그인하기",

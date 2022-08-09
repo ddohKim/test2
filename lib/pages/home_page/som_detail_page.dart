@@ -7,32 +7,39 @@ import 'package:test2/constants/common_size.dart';
 import 'package:test2/data/comment_model.dart';
 import 'package:test2/data/item_model.dart';
 import 'package:test2/data/user_model.dart';
-import 'package:test2/pages/home_page/report_to_manager_page.dart';
-import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/pages/chat_page/chatroom_page.dart';
+import 'package:test2/pages/report_page/report_to_manager_page.dart';
+import 'package:test2/repository/user_service.dart';
+import 'package:test2/states/page_notifier.dart';
 import 'package:test2/repository/item_service.dart';
 import 'package:test2/states/comment_notifier.dart';
 import 'package:test2/widgets/comment.dart';
 import 'package:test2/widgets/time_calculator.dart';
 
+import '../../data/chatroom_model.dart';
+import '../../repository/chat_service.dart';
+
 class SomDetailScreen extends StatefulWidget {
   final String itemKey;
 
-   SomDetailScreen({
-    Key? key,
-    required this.itemKey,
-  }) : super(key: key);
+  ItemModel itemModel;
+
+
+  SomDetailScreen({Key? key, required this.itemKey, required this.itemModel})
+      : super(key: key);
 
   @override
   _ItemDetailScreenState createState() => _ItemDetailScreenState();
 }
 
 class _ItemDetailScreenState extends State<SomDetailScreen> {
+  UserModel? saTangListModel;
   TextEditingController _commentController = TextEditingController();
   PageController _pageController = PageController();
   ScrollController _scrollController = ScrollController();
   Size? _size;
-  bool selectedHeart=false;
-
+  bool selectedHeart = false;
+  String? _nickName;
   num? _statusBarHeight;
   num? _statusBottomBarHeight;
   late CommentNotifier _commentNotifier;
@@ -89,11 +96,11 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
             ItemModel itemModel = snapshot.data!;
             UserModel userModel =
                 context.read<PageNotifier>().userModel!; //provider를 통해서 가져옴
+
+
             return LayoutBuilder(
-
-                builder: (BuildContext context, BoxConstraints constraints)  {
-
-                  _size = MediaQuery.of(context).size;
+                builder: (BuildContext context, BoxConstraints constraints) {
+              _size = MediaQuery.of(context).size;
               _statusBarHeight =
                   MediaQuery.of(context).padding.top; //statusbar 길이
               _statusBottomBarHeight = MediaQuery.of(context).padding.bottom;
@@ -115,28 +122,68 @@ class _ItemDetailScreenState extends State<SomDetailScreen> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () async  {
-setState(() {
-
-});
-                                  await  ItemService().toggleLike(userModel.userKey, itemModel.itemKey,itemModel);
-                                    setState(() {
-                                 });
+                                  onPressed: () async {
+                                    setState(() {});
+                                    await ItemService().toggleLike(
+                                        userModel.userKey,
+                                        itemModel.itemKey,
+                                        itemModel);
+                                    setState(() {});
                                   },
-                                  icon: Icon(itemModel.heartNumber.contains(userModel.userKey)
+                                  icon: Icon(itemModel.heartNumber
+                                          .contains(userModel.userKey)
                                       ? Icons.favorite
                                       : Icons.favorite_border),
-
-                                )
-                                ,
+                                ),
                                 VerticalDivider(
                                   thickness: 1,
                                   width: common_small_padding * 2 + 1,
                                   indent: common_small_padding,
                                   endIndent: common_small_padding,
                                 ),
-                                TextButton(
-                                    onPressed: () {}, child: Text('일대일 채팅하기'))
+                                (itemModel.userKey == userModel.userKey)
+                                    ? TextButton(
+                                        onPressed: () {},
+                                        child: Text("자신의 글입니다."))
+                                    : TextButton(
+                                        onPressed: () async {
+                                          String
+                                              chatroomKey = //chatroomKey를 새로 생성해준다
+                                              ChatroomModel.generateChatRoomKey(
+                                                  userModel.userKey,
+                                                  itemModel.userKey);
+                                          ChatroomModel _chatroomModel =
+                                              ChatroomModel(
+                                                  //새로운 chatroom 만들어주기
+                                                  itemTitle: itemModel.title,
+                                                  myKey: userModel.userKey,
+                                                  yourKey: itemModel.userKey,
+                                                  yourImage:
+                                                      'https://picsum.photos/50',
+                                                  myImage:
+                                                      'https://picsum.photos/50',
+                                                  chatroomKey: chatroomKey,
+                                                  lastMsgTime: DateTime.now(),
+                                                  myNickName:
+                                                      await PageNotifier()
+                                                          .nickName(userModel
+                                                              .userKey),
+                                                  yourNickName:
+                                                      await PageNotifier()
+                                                          .nickName(itemModel
+                                                              .userKey));
+                                          await ChatService().createNewChatroom(
+                                              _chatroomModel);
+
+                                          // context.beamToNamed('/item/${widget.itemKey}/$chatroomKey'); //해당 chatroom으로 이동한다
+
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(builder:
+                                                  (BuildContext context) {
+                                            return ChatroomScreen(chatroomKey);
+                                          }));
+                                        },
+                                        child: Text('일대일 채팅하기'))
                               ],
                             ),
                           ),
@@ -173,8 +220,7 @@ setState(() {
                                       ),
                                       _textGap,
                                       Text(
-
-                                        '❤️ ${ itemModel.heartNumber.length}',
+                                        '❤️ ${itemModel.heartNumber.length}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyText2!
@@ -241,11 +287,19 @@ setState(() {
                                             shrinkWrap: true,
                                             padding: const EdgeInsets.all(10),
                                             itemBuilder: (context, index) {
+                                              nickNameFunction(commentNotifier
+                                                  .commentList[index].userKey);
+
                                               bool isMine = commentNotifier
                                                       .commentList[index]
                                                       .userKey ==
                                                   userModel.userKey;
+                                              saTangModel(itemModel.userKey);
+
                                               return Comment(
+                                                isSaTang:saTangListModel!.saTangList!.contains(userModel.userKey),
+                                                saTangList: userModel.userKey,
+                                                nickName: _nickName!,
                                                 size: _size!,
                                                 isMine: isMine,
                                                 commentModel: commentNotifier
@@ -395,6 +449,7 @@ setState(() {
           width: _size!.width / 10,
           height: _size!.width / 10,
           shape: BoxShape.circle,
+          scale: 0.1,
         ),
         const SizedBox(
           width: common_small_padding,
@@ -437,6 +492,20 @@ setState(() {
     );
   }
 
+  Future<void> nickNameFunction(String userKey) async {
+    UserModel nickName;
+    nickName = await UserService().getUserModel(userKey);
+    if(mounted) {
+      setState(() {
+        _nickName = nickName.nickName!;
+      });
+    }  }
+
+  Future<void> saTangModel(String userKey) async {
+    saTangListModel= await UserService().getUserModel(userKey);
+    }
+
+
   void _reportItem() {
     showDialog(
         context: context,
@@ -462,7 +531,8 @@ setState(() {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>  ReportToManagerPage(itemKey: widget.itemKey)),
+                          builder: (context) =>
+                              ReportToManagerPage(itemKey: widget.itemKey)),
                     );
                   },
                   child: const Text('신고'))

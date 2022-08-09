@@ -31,6 +31,7 @@ class _SomPageState extends State<SomPage> {
             future: ItemService().getItems(),
             builder: (context, snapshot) {
               return Scaffold(
+                backgroundColor: Colors.white,
                 body: RefreshIndicator(
                   onRefresh: _onRefresh,
                   child:AnimatedSwitcher(
@@ -82,7 +83,7 @@ FutureOr onGoBack(dynamic value) async{
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
               return SomDetailScreen(
-                  itemKey: item.itemKey
+                  itemKey: item.itemKey,itemModel: item,
               );
             })).then(onGoBack);
             //context.beamToNamed('/$LOCATION_ITEM/:${item.itemKey}');
@@ -100,6 +101,7 @@ FutureOr onGoBack(dynamic value) async{
                       fit: BoxFit.cover,
                       shape: BoxShape.rectangle, //shape를 줘야 borderradious가 만들어짐
                       borderRadius: BorderRadius.circular(12),
+                      scale: 0.1,
                     ):Icon(Icons.lock,size: 70,)),
                 SizedBox(
                   width: common_small_padding,

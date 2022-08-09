@@ -9,8 +9,6 @@ class CategoryInputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
-        elevation: 2,
         leading: TextButton(
           style: TextButton.styleFrom(
               primary: Colors.black54, //클릭했을때 색깔 나오도록

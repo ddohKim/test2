@@ -1,4 +1,5 @@
 class TimeCalculator {
+
   String getTimeDiff(DateTime createdDate) {
     DateTime now = DateTime.now();
     Duration timeDiff = now.difference(

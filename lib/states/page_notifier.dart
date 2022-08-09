@@ -17,6 +17,7 @@ class PageNotifier extends ChangeNotifier{
         goToOtherPage(StartPage.pageName);
       } else{
         if(user.emailVerified) {
+
           goToMain('');
         } else {
           goToOtherPage(CheckYourEmail.pageName);
@@ -48,6 +49,8 @@ class PageNotifier extends ChangeNotifier{
       }} //vertified가 안되어있으면 여기로 이동
   }
 
+
+
   Future _setNewUser(User? user,String? userNickName)async{
     _user=user;
     if(user!=null&&user.email!=null)
@@ -57,6 +60,18 @@ class PageNotifier extends ChangeNotifier{
     await UserService().createdNewUser(userModel.toJson(), userKey);//UserService()가 한번만 생성되도록 해줌!
     _userModel=await UserService().getUserModel(userKey); //_userModel 받아오기
     }
+  }
+
+  Future<String> nickName(String userKey)async{
+    UserModel _userModel2;
+    _userModel2=await UserService().getUserModel(userKey);
+    return _userModel2.nickName!;
+  } //nickname 가져오기
+
+
+  withdrawalAccount() async {
+    await _user!.delete();
+    _user=null;
   }
 
   User? get user=>_user;

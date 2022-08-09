@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test2/pages/home_page/report_upload_page.dart';
+import 'package:test2/pages/report_page/report_upload_page.dart';
 import 'package:test2/states/report_to_manager_notifier.dart';
 
 class ReportToManagerPage extends StatefulWidget {
@@ -15,9 +15,8 @@ class _ReportToManagerPageState extends State<ReportToManagerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
-        elevation: 2,
         leading: TextButton(
           style: TextButton.styleFrom(
               primary: Colors.black54, //클릭했을때 색깔 나오도록
@@ -33,7 +32,8 @@ class _ReportToManagerPageState extends State<ReportToManagerPage> {
                 .bodyText2,
           ),
           onPressed: () {
-            Navigator.pop(context); //뒤로가기 버튼 만들기
+            Navigator.popUntil(context, (route) => route.isFirst);
+            //Navigator.pop(context); //뒤로가기 버튼 만들기
           },
         ),
         title: Text(

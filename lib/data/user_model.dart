@@ -5,20 +5,32 @@ class UserModel {
   late String emailAddress;
   late DateTime createdDate;
   late String userKey;
+   String? profileImageUrl;
   DocumentReference? reference;
    String? nickName;
+   String? introduce;
+num? saTang;
+  List<dynamic>? saTangList;
 
   UserModel({
     required this.emailAddress,
     required this.createdDate,
     required this.userKey,
     this.nickName,
+    this.profileImageUrl,
     this.reference,
+    this.introduce,
+    this.saTang,
+    this.saTangList
   });
 
   UserModel.fromJson(Map<String, dynamic> json, this.userKey, this.reference) {
    nickName=json['nickName']??"";
-    emailAddress = json['emailAddress'];
+   introduce=json['introduce']??"";
+   saTang=json['saTang']??0;
+   saTangList=json['saTangList']??[];
+    emailAddress = json['emailAddress']??"";
+    profileImageUrl=json['profileImageUrl']??"";
     createdDate = json['createdDate'] == null
         ? DateTime.now().toUtc()
         : (json['createdDate'] as Timestamp)
@@ -33,6 +45,9 @@ class UserModel {
     map['emailAddress'] = emailAddress;
     map['createdDate'] = createdDate;
     map['nickName']=nickName;
+    map['saTang']=saTang;
+    map['saTangList']=saTangList;
+    map['introduce']=introduce;
     return map;
   }
 }

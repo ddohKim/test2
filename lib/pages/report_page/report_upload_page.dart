@@ -38,9 +38,8 @@ class _ReportUploadPageState extends State<ReportUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.cyanAccent,
-        elevation: 2,
         leading: TextButton(
           style: TextButton.styleFrom(
               primary: Colors.black54, //클릭했을때 색깔 나오도록
@@ -67,7 +66,7 @@ class _ReportUploadPageState extends State<ReportUploadPage> {
               style: Theme.of(context).textTheme.bodyText2,
             ),
             onPressed: () async{
-              if (FirebaseAuth.instance.currentUser == null) return null;
+              if (FirebaseAuth.instance.currentUser == null) {return null;}
 
               final String userKey = FirebaseAuth.instance.currentUser!.uid;
               ReportModel reportModel = ReportModel(
@@ -83,8 +82,8 @@ class _ReportUploadPageState extends State<ReportUploadPage> {
              //   MaterialPageRoute(
              //       builder: (context) => MyHomePage()),
              // );
-             // Navigator.popUntil(context, (route) => route.isFirst); //첫번째 route로 돌아가기
-              Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName)); //첫번째 route로 돌아가기
+             Navigator.popUntil(context, (route) => route.isFirst); //첫번째 route로 돌아가기
+            //  Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName)); //첫번째 route로 돌아가기
               // Navigator.pop(context); //뒤로가기 버튼 만들기
             },
           )

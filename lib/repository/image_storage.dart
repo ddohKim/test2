@@ -19,4 +19,22 @@ class ImageStorage {
     }
   return downloadUrls;
   }
+
+  static Future<String> uploadProfileImage(Uint8List image,String userKey) async {
+
+    var metaData = SettableMetadata(contentType: 'profileImage/jpeg'); //파일 형태를 jpg로 바꾸는 법
+String downloadUrl;
+
+
+      Reference ref =
+      FirebaseStorage.instance.ref('profileImage/$userKey.jpg');
+      if (image.isNotEmpty) await ref.putData(image, metaData).catchError((onError){
+        print('$onError.toString()');
+      });
+      downloadUrl=await ref.getDownloadURL();
+
+    return downloadUrl;
+  }
+
+
 }

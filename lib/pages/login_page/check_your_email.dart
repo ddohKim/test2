@@ -2,7 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/states/page_notifier.dart';
 
 class CheckYourEmail extends Page {
   static const pageName = "CheckYourEmail";
@@ -36,6 +36,7 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
   }
 
   Widget build(BuildContext context) {
+    Size _size=MediaQuery.of(context).size;
     return Material(
       child: Container(
         color: Colors.cyanAccent,
@@ -68,12 +69,15 @@ class _AuthWidgetState extends State<CheckYourEmailWidget> {
                     height: 40,
                   ),
                   _emailverified?_emailVerified(context):Container(height: 50,),
-                   Center(
-                     child: SizedBox(width: 300,height: 300,
-                     child: ExtendedImage.asset(
-                                'assets/솜사탕_2.png'),
-                     ),
+                   Expanded(
+
+                     child: Center(
+                       child: SizedBox(
+                         child: ExtendedImage.asset(
+                                    'assets/솜사탕_2.png'),
+                       ),
                   ),
+                   ),
                 ],
               ),
             ),

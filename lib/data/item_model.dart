@@ -55,6 +55,10 @@ class ItemModel {
   ItemModel.fromQuerySnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) //: 이니셜라이져라고 불림 {}보다 더 빨리 실행됨
       : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
 
+ // ItemModel.fromQuerySnapShot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) //docs 는 UserModel.fromSnapshot 아닌 querydocumentsnapshot으로 받아야 하기 때문에 이걸 사용해줘서 ITemModel List를 받아온다
+   //   : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference); //무조건 snapshot은 데이터가 존재한다
+
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['nickName'] = nickName;
@@ -71,7 +75,14 @@ class ItemModel {
     return map;
   }
 
-
+  Map<String, dynamic> toMinJson() { //firestore에 user에 최소한의 item 정보들을 저장할때
+    final map = <String, dynamic>{};
+    map['imageDownloadUrls'] = imageDownloadUrls.isEmpty?'':imageDownloadUrls.sublist(0,1); //1개의 list 내 index 만 필요하다
+    map['title'] = title;
+    map['createdDate'] = createdDate;
+    map['category']=category;
+    return map;
+  }
   static String generateItemKey(String uid){
     String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
     return '{$uid}_$timeInMilli';

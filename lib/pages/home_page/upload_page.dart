@@ -8,7 +8,7 @@ import 'package:test2/data/item_model.dart';
 import 'package:test2/data/user_model.dart';
 import 'package:test2/pages/home_page/category_input_page.dart';
 import 'package:test2/pages/home_page/multi_image_select.dart';
-import 'package:test2/provider/page_notifier.dart';
+import 'package:test2/states/page_notifier.dart';
 import 'package:test2/repository/image_storage.dart';
 import 'package:test2/repository/item_service.dart';
 import 'package:test2/states/category_notifier.dart';
@@ -145,7 +145,7 @@ class _UploadPageWidgetState extends State<UploadPageWidget> {
                         secret: _secretSelected,
                         detail: _detailController.text,
                         createdDate: DateTime.now().toUtc(), lastComment: '');
-                    await ItemService().createdNewItem(itemModel.toJson(), itemKey);
+                    await ItemService().createdNewItem(itemModel, itemKey,userKey);
                     images.clear();
                     context.read<CategoryNotifier>().setNewCategory(
                         CategoryNotifier.categories.first);
